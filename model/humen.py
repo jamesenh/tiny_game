@@ -5,6 +5,7 @@
 
 import random
 from model.base import Base
+from func.compute import check_alive
 from data_source import physical_attack_list, physical_health_list, physical_magic_list
 
 
@@ -17,12 +18,14 @@ class Human(Base):
 		:param gender: 性别 1男 0女
 		:param physical: 体质 (0 - 9)
 		"""
-		self.physical_attack_num = 0
-		self.magic_num = 0
+		self.physical_attack_num = 0    # 物攻
+		self.magic_num = 0  # 当前蓝量
 		self.name = name
 		self.age = age
 		self.gender = gender
-		self.physical = physical
+		self.physical = physical    # 初始体质
+		self.magic_num_max = 0  # 最大血量
+		self.gold = 0
 		self.physical_init()
 
 	def physical_init(self):
@@ -34,8 +37,10 @@ class Human(Base):
 		self.physical_attack_num = random.randint(physical_attack_list[self.physical][0], physical_attack_list[self.physical][1])
 		# 初始化血量
 		self.health_num = random.randint(physical_health_list[self.physical][0], physical_health_list[self.physical][1])
+		self.health_num_max = self.health_num
 		# 初始化蓝量
 		self.magic_num = random.randint(physical_magic_list[self.physical][0], physical_magic_list[self.physical][1])
+		self.magic_num_max = self.magic_num
 
 	def physical_attack(self, foe: Base):
 		"""
@@ -45,13 +50,9 @@ class Human(Base):
 		"""
 		# 敌人血量降低
 		foe.health_num -= self.physical_attack_num
-		# 判断敌人是否还活着
-		if foe.health_num <= 0:
-			foe.is_alive = 0
-
-
+		check_alive(foe)
 	
-	def skill_attack(self):
+	def skills(self):
 		""""""
 	
 	def have_a_break(self):
@@ -72,7 +73,7 @@ class Human(Base):
 	def sale_something(self):
 		""""""
 	
-	def training(self):
+	def sleep(self):
 		""""""
 	
 	
