@@ -8,7 +8,10 @@ def selector(choices: dict):
 	while True:
 		for key, value in choices.items():
 			print('{} --> {}'.format(key, value))
-		selected = int(input('输入你的选择: '))
+		try:
+			selected = int(input('输入你的选择: '))
+		except:
+			continue
 		if selected in ('', None) or (selected not in choices):
 			print('重新选择')
 			continue

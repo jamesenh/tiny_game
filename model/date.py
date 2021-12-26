@@ -4,6 +4,7 @@
 # @time:2021/12/24
 
 from xpinyin import Pinyin
+import math
 
 
 class Date:
@@ -12,17 +13,27 @@ class Date:
 	day: int
 	now_date_num = 0
 	per_month = 30
-	per_year = 12
+	per_year = 360
 	
 	def __init__(self):
 		""""""
+		self.now_date_num = 1
 		
 	def now_date(self):
 		""""""
-		self.year = self.now_date_num // (self.per_year * self.per_month) + 1
-		self.month = (self.now_date_num % (self.per_month * self.per_year)) // self.per_month
-		self.day = self.now_date_num % (self.per_month * self.per_year) % self.per_month
-		return '公元{}年{}月{}日'.format(convert(self.year) if self.year > 1 else '元', convert(self.month), convert(self.day) if self.day else '三十')
+		self.year = math.ceil(self.now_date_num / self.per_year)
+		y = self.now_date_num % self.per_year
+		y = self.per_year if y == 0 else y
+		self.month = math.ceil(y / self.per_month)
+		self.day = self.now_date_num % self.per_year % self.per_month
+		self.day = self.per_month if self.day == 0 else self.day
+		# return self.year, self.month, self.day
+		# return '公元{}年{}月{}日'.format(convert(self.year), convert(self.month), convert(self.day))
+		return '公元{}年{}月{}日'.format (self.year, self.month, self.day)
+	
+	def date_increase(self, num: int):
+		""""""
+		self.now_date_num += num
 
 def convert(num):
 	ch_num = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
@@ -60,7 +71,7 @@ def convert(num):
 
 if __name__ == '__main__':
 	dd = Date()
-	dd.now_date_num = 3
+	dd.now_date_num = 3601
 	print(dd.now_date())
 
 
