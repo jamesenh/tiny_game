@@ -5,8 +5,10 @@
 
 import random
 from model.base import Base
+from model.date import Date
 from func.compute import check_alive
 from data_source import physical_attack_list, physical_health_list, physical_magic_list
+import time, os
 
 
 class Human(Base):
@@ -14,7 +16,7 @@ class Human(Base):
 		"""
 		人物类
 		:param name:名字
-		:param age: 0 < 年纪 < 10
+		:param age: 16 < 年纪 < 18
 		:param gender: 性别 1男 0女
 		:param physical: 体质 (0 - 9)
 		"""
@@ -26,8 +28,27 @@ class Human(Base):
 		self.physical = physical    # 初始体质
 		self.magic_num_max = 0  # 最大血量
 		self.gold = 0
+		self.life = Life(self)
 		self.physical_init()
-
+		self.information = {
+			"姓名": self.name,
+			"年龄": self.age,
+			"血条": "{}/{}".format(self.health_num, self.health_num_max),
+			"蓝条": "{}/{}".format(self.magic_num, self.magic_num_max),
+			"物理攻击力": self.physical_attack_num,
+			"金钱": self.gold,
+			"护甲": self.protect_num,
+			"装备": [],
+			"技能": []
+		}
+	
+	def show_information(self):
+		""""""
+		print('-' * 30)
+		for k, v in self.information.items():
+			print('【{}】=> {}'.format(k, v))
+		print('-' * 30)
+	
 	def physical_init(self):
 		"""
 		根据初始体质初始化 物理攻击力、血量、蓝量
@@ -56,7 +77,13 @@ class Human(Base):
 		""""""
 	
 	def have_a_break(self):
-		""""""
+		"""
+		打坐休息（回蓝回血）
+		:return:
+		"""
+		while self.health_num < self.health_num_max:
+			""""""
+		
 	
 	def levelup(self):
 		""""""
@@ -75,8 +102,37 @@ class Human(Base):
 	
 	def sleep(self):
 		""""""
+
+
+class Life:
+	def __init__(self, obj: Base, is_test: int = 0):
+		self.is_test = is_test
+		# 创建目录
+		dir_path = './life_history/'
+		if not os.path.exists(dir_path):
+			os.mkdir(dir_path)
+		self.obj = obj
+		self.f = open('{}{}的一生.life'.format(dir_path, self.obj.name), mode='a', encoding='utf-8')
 	
+	def born(self, date: Date):
+		self.write('【{}】于{}开始了他传奇的一生\n'.format(self.obj.name, date.now_date()))
 	
+	def __del__(self):
+		self.write('【{}】\t下辈子记得做个好人\n'.format(self.obj.name))
+		self.f.close()
+	
+	def write(self, content: str):
+		""""""
+		print(content)
+		if self.is_test:
+			return
+		self.f.write(content + '\n')
+	
+	def dead(self, date: Date):
+		""""""
+		if self.obj.is_alive == 0:
+			self.write('【{}】于{}结束了他罪恶的一生\n'.format(self.obj.name, date.now_date()))
+
 
 if __name__ == '__main__':
 	p = Human('Dio', 5, 1, 9)

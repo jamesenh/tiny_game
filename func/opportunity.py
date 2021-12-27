@@ -10,6 +10,11 @@ __product_name = PyCharm
 """
 
 
+class Opportunity:
+	def __init__(self):
+		""""""
+	
+	
 
 
 
