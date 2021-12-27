@@ -1,6 +1,5 @@
 
 from model.base import Base
-from func.compute import check_alive
 
 
 class Skill:
@@ -31,7 +30,7 @@ class Skill:
         if foe.protect_num + foe.health_num <= self.skill_attack_num:
             foe.health_num = 0
             foe.is_alive = 0
-            print('【{}】被击败，扑街！！！'.format(foe.name))
+            print('【{}】被【{}】的《{}》击败，扑街！！！'.format(foe.name, operator.name, self.skill_name))
         elif foe.protect_num >= self.skill_attack_num:
             print('【{}】仅凭护甲硬抗住了【{}】的《{}》！'.format(foe.name, operator.name, self.skill_name))
         else:
@@ -40,11 +39,22 @@ class Skill:
 
     def skill_attack_without_protect(self, operator: Base, foe: Base):
         """无视护甲的技能攻击"""
-        foe.health_num -= self.skill_attack_without_protect_num
-        check_alive(foe)
+        if foe.health_num < self.skill_attack_without_protect_num:
+            foe.health_num = 0
+            foe.is_alive = 0
+            print('【{}】被【{}】的《{}》击败，扑街！！！'.format(foe.name, operator.name, self.skill_name))
+        else:
+            foe.health_num -= self.skill_attack_without_protect_num
+            print('【{}】抗住了【{}】的《{}》'.format(foe.name, operator.name, self.skill_name))
 
     def recover_health(self, operator: Base, foe: Base):
         """恢复血量"""
+        if operator.health_num + self.recover_health_num >= operator.health_num_max:
+            operator.health_num = operator.health_num_max
+            print('【{}】使用《{}》回满了血量。'.format(operator.name, self.skill_name))
+        else:
+            operator.health_num += self.recover_health_num
+            print('【{}】使用《{}》回复了{}血量'.format(operator.name, self.skill_name, self.recover_health_num))
         
 
 

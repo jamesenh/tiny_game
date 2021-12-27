@@ -115,10 +115,10 @@ class Life:
 		self.f = open('{}{}的一生.life'.format(dir_path, self.obj.name), mode='a', encoding='utf-8')
 	
 	def born(self, date: Date):
-		self.write('【{}】于{}开始了他传奇的一生\n'.format(self.obj.name, date.now_date()))
+		self.write('【{}】于{}开始了他传奇的一生'.format(self.obj.name, date.now_date()))
 	
 	def __del__(self):
-		self.write('【{}】\t下辈子记得做个好人\n'.format(self.obj.name))
+		self.write('【{}】\t下辈子记得做个好人'.format(self.obj.name))
 		self.f.close()
 	
 	def write(self, content: str):
@@ -131,7 +131,7 @@ class Life:
 	def dead(self, date: Date):
 		""""""
 		if self.obj.is_alive == 0:
-			self.write('【{}】于{}结束了他罪恶的一生\n'.format(self.obj.name, date.now_date()))
+			self.write('【{}】于{}结束了他罪恶的一生'.format(self.obj.name, date.now_date()))
 
 
 if __name__ == '__main__':
