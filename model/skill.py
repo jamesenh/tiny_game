@@ -3,8 +3,9 @@ from model.base import Base
 
 
 class Skill:
-    def __init__(self, skill_name):
-        self.skill_name = skill_name
+    """所有技能的父类"""
+    def __init__(self):
+        self.skill_name = ''
         self.magic_expend_num = 0   # 耗蓝量
         self.skill_attack_num = 0   # 技能攻击力
         self.skill_attack_without_protect_num = 0   # 无视护甲攻击力
@@ -23,7 +24,7 @@ class Skill:
             elif self.skill_attack_without_protect_num:
                 self.skill_attack_without_protect(operator, foe)
             elif self.recover_health_num:
-                self.recover_health(operator, foe)
+                self.recover_health(operator)
 
     def skill_attack(self, operator:Base, foe: Base):
         """技能攻击"""
@@ -47,7 +48,7 @@ class Skill:
             foe.health_num -= self.skill_attack_without_protect_num
             print('【{}】抗住了【{}】的《{}》'.format(foe.name, operator.name, self.skill_name))
 
-    def recover_health(self, operator: Base, foe: Base):
+    def recover_health(self, operator: Base):
         """恢复血量"""
         if operator.health_num + self.recover_health_num >= operator.health_num_max:
             operator.health_num = operator.health_num_max
