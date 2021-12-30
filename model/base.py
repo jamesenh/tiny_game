@@ -10,3 +10,4 @@ class Base:
     magic_num_max: int = 0      # 总蓝量
     physical_attack_num: int = 0  # 物理攻击力
     protect_num = 0  # 护甲
+    level = 0   # 等级

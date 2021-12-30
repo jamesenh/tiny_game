@@ -8,6 +8,7 @@ from model.base import Base
 from model.date import Date
 from func.compute import check_alive
 from data_source import physical_attack_list, physical_health_list, physical_magic_list
+from func.tools import wait
 import time, os
 
 
@@ -20,19 +21,21 @@ class Human(Base):
 		:param gender: 性别 1男 0女
 		:param physical: 体质 (0 - 9)
 		"""
-		self.physical_attack_num = 0    # 物攻
-		self.magic_num = 0  # 当前蓝量
 		self.name = name
 		self.age = age
 		self.gender = gender
 		self.physical = physical    # 初始体质
-		self.magic_num_max = 0  # 最大血量
 		self.gold = 0
 		self.life = Life(self)
 		self.physical_init()
+		self.information = {}
+	
+	def show_information(self):
+		""""""
 		self.information = {
 			"姓名": self.name,
 			"年龄": self.age,
+			"等级": self.level,
 			"血条": "{}/{}".format(self.health_num, self.health_num_max),
 			"蓝条": "{}/{}".format(self.magic_num, self.magic_num_max),
 			"物理攻击力": self.physical_attack_num,
@@ -41,9 +44,6 @@ class Human(Base):
 			"装备": [],
 			"技能": []
 		}
-	
-	def show_information(self):
-		""""""
 		print('-' * 30)
 		for k, v in self.information.items():
 			print('【{}】=> {}'.format(k, v))
@@ -78,15 +78,24 @@ class Human(Base):
 	
 	def have_a_break(self):
 		"""
-		打坐休息（回蓝回血）
+		休息（回蓝回血）
 		:return:
 		"""
-		while self.health_num < self.health_num_max:
+		print('恢复中', end='')
+		while self.health_num < self.health_num_max or self.magic_num < self.magic_num_max:
 			""""""
-		
+			print('.', end='')
+			time.sleep(0.8)
+			self.health_num += 1
+			self.magic_num += 1
+		self.health_num = self.health_num_max
+		self.magic_num = self.magic_num_max
 	
-	def levelup(self):
+	def levelup(self, raise_num: int):
 		""""""
+		self.level += raise_num
+		
+		print('')
 	
 	def up_equipment(self):
 		""""""
@@ -118,7 +127,7 @@ class Life:
 		self.write('【{}】于{}开始了他传奇的一生'.format(self.obj.name, date.now_date()))
 	
 	def __del__(self):
-		self.write('【{}】\t下辈子记得做个好人'.format(self.obj.name))
+		self.write('下辈子记得做个好人 【{}】'.format(self.obj.name))
 		self.f.close()
 	
 	def write(self, content: str):
@@ -130,8 +139,8 @@ class Life:
 	
 	def dead(self, date: Date):
 		""""""
-		if self.obj.is_alive == 0:
-			self.write('【{}】于{}结束了他罪恶的一生'.format(self.obj.name, date.now_date()))
+		# if self.obj.is_alive == 0:
+		self.write('【{}】于{}结束了他罪恶的一生'.format(self.obj.name, date.now_date()))
 
 
 if __name__ == '__main__':

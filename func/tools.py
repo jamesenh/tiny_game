@@ -13,13 +13,14 @@ def selector(choices: dict):
 			selected = int(input('输入你的选择: '))
 		except:
 			continue
-		if selected in ('', None) or (selected not in choices):
+		if selected not in choices:
 			print('重新选择')
 			continue
 		print('你选择 {}'.format(choices[selected]))
 		return selected
 
-selector({1: '000', 2: 'asdasdz', 3: '613sa1df35sd1f'})
+def wait():
+	_wait = input('任意键继续')
 
 
 

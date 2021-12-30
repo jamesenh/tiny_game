@@ -71,7 +71,9 @@ def convert(num):
 
 if __name__ == '__main__':
 	dd = Date()
-	dd.now_date_num = 3601
+	dd.now_date_num = 1
+	print(dd.now_date())
+	dd.date_increase(30)
 	print(dd.now_date())
 
 
