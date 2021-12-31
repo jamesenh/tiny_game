@@ -94,3 +94,21 @@ class Cycle_event(Event):
 	
 	def show_info(self):
 		self.obj.show_information()
+
+
+class Battle(Event):
+	"""决斗类"""
+	def __init__(self):
+		super().__init__()
+	
+	def start(self, obj: Base, obj2: Base):
+		""""""
+
+
+
+
+
+
+
+
+
